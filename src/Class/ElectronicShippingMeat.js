@@ -8,7 +8,6 @@ const AfipWebService = require('./AfipWebService');
 module.exports = class ElectronicShippingMeat extends AfipWebService {
   constructor(afip) {
     const options = {
-      soapV12: true,
       WSDL: 'wsremcarne-production.wsdl',
       URL: 'https://serviciosjava.afip.gob.ar/wsremcarne/RemCarneService',
       WSDL_TEST: 'wsremcarne.wsdl',
