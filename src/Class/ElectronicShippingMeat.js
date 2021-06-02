@@ -5,7 +5,7 @@ const AfipWebService = require('./AfipWebService');
  * 
  * @link http://www.afip.gob.ar/fe/documentos/manual_desarrollador_COMPG_v2_10.pdf WS Specification
  **/
-module.exports = class ElectronicShippingSugar extends AfipWebService {
+module.exports = class ElectronicShippingMeat extends AfipWebService {
 	constructor(afip){
 		const options = {
 			soapV12: true,
@@ -241,6 +241,16 @@ module.exports = class ElectronicShippingSugar extends AfipWebService {
 	 **/
 	async getTaxTypes() {
 		return (await this.executeRequest('FEParamGetTiposTributos')).ResultGet.TributoTipo;
+	}
+	
+	/**
+	 * Asks to AFIP Servers for tax availables {@see WS 
+	 * Specification item 4.10}
+	 *
+	 * @return array All tax availables
+	 **/ 
+	async getShippingReceivers() {
+		return (await this.executeRequest('consultarRemitosReceptor')).ResultGet.TributoTipo;
 	}
 
 	/**
