@@ -15,7 +15,9 @@ var xmlParser = new xml2js.Parser({
 
 // Available Web Services
 const ElectronicBilling = require('./Class/ElectronicBilling');
-const ElectronicShipping = require('./Class/ElectronicShipping');
+const ElectronicShippingMeat = require('./Class/ElectronicShippingMeat');
+const ElectronicShippingSugar = require('./Class/ElectronicShippingSugar');
+const ElectronicShippingFlour = require('./Class/ElectronicShippingFlour');
 const RegisterScopeFour = require('./Class/RegisterScopeFour');
 const RegisterScopeFive = require('./Class/RegisterScopeFive');
 const RegisterScopeTen = require('./Class/RegisterScopeTen');
@@ -110,7 +112,9 @@ function Afip(options = {}){
 	}
 
 	this.ElectronicBilling 			= new ElectronicBilling(this);
-	this.ElectronicShipping			= new ElectronicShipping(this);
+	this.ElectronicShippingMeat		= new ElectronicShippingMeat(this);
+	this.ElectronicShippingSugar	= new ElectronicShippingSugar(this);
+	this.ElectronicShippingFlour	= new ElectronicShippingFlour(this);
 	this.RegisterScopeFour 			= new RegisterScopeFour(this);
 	this.RegisterScopeFive 			= new RegisterScopeFive(this);
 	this.RegisterInscriptionProof 	= new RegisterScopeFive(this);

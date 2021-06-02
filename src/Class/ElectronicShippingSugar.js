@@ -1,18 +1,18 @@
 const AfipWebService = require('./AfipWebService');
 
 /**
- * SDK for AFIP Electronic Billing (wsfe1)
+ * SDK for AFIP Electronic Shipping (wsremazucar)
  * 
  * @link http://www.afip.gob.ar/fe/documentos/manual_desarrollador_COMPG_v2_10.pdf WS Specification
  **/
-module.exports = class ElectronicShipping extends AfipWebService {
+module.exports = class ElectronicShippingSugar extends AfipWebService {
 	constructor(afip){
 		const options = {
 			soapV12: true,
-			WSDL: 'wsfe-production.wsdl',
-			URL: 'https://servicios1.afip.gov.ar/wsfev1/service.asmx',
-			WSDL_TEST: 'wsfe.wsdl',
-			URL_TEST: 'https://wswhomo.afip.gov.ar/wsfev1/service.asmx',
+			WSDL: 'wsremazucar-production.wsdl',
+			URL: 'https://serviciosjava.afip.gob.ar/wsremazucar/RemAzucarService',
+			WSDL_TEST: 'wsremazucar.wsdl',
+			URL_TEST: 'https://fwshomo.afip.gov.ar/wsremazucar/RemAzucarService',
 			afip
 		}
 
@@ -299,8 +299,8 @@ module.exports = class ElectronicShipping extends AfipWebService {
 			return {};
 		}
 
-		const { token, sign } = await this.afip.GetServiceTA('wsfecred');
-
+		const { token, sign } = await this.afip.GetServiceTA('wsremazucar');
+		
 		return {
 			'Auth' : { 
 				'Token' : token,
