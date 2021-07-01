@@ -1,17 +1,17 @@
 const AfipWebService = require('@afipsdk/afip.js/src/Class/AfipWebService');
 
 /**
- * SDK for AFIP Electronic Packing Slip (RemCarneService)
+ * SDK for AFIP Electronic Packing Slip (RemAzucarService)
  *
- * @link https://www.afip.gob.ar/ws/remitoElecCarnico/Manual-Desarrollador-WSREMCARNE-v3-4.pdf
+ * @link https://www.afip.gob.ar/ws/remitoElecAzucar/Manual-DesarrolladorWSREMAZUCAR-v2_0_8.pdf
  **/
-module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
+module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
   constructor(afip) {
     const options = {
-      WSDL: 'wsremcarne-production.wsdl',
-      URL: 'https://serviciosjava.afip.gob.ar/wsremcarne/RemCarneService',
-      WSDL_TEST: 'wsremcarne.wsdl',
-      URL_TEST: 'https://fwshomo.afip.gov.ar/wsremcarne/RemCarneService',
+      WSDL: 'wsremazucar-production.wsdl',
+      URL: 'https://serviciosjava.afip.gob.ar/wsremazucar/RemAzucarService',
+      WSDL_TEST: 'wsremazucar.wsdl',
+      URL_TEST: 'https://fwshomo.afip.gov.ar/wsremazucar/RemAzucarService',
       afip
     }
 
@@ -20,44 +20,37 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
 
   /**
    * Asks to AFIP Servers for receivers packing slips {@see WS
-   * Specification item 2.5.14}
+   * Specification item 19}
    *
+   * @param Date fromDate 		From Date to get the slips (required)
+   * @param Date toDate 		To Date to get the slips (required)
+   * @param String status 		Status of the slip. Possible values are "EMI" | "ACE" | "ACP" | "NAC" | "CON" | "NCO"
+   * @param int page 			Number of page results
    * @return array All packing slips
    **/
-  async getPackingSlipsReceivers({ statusType, page = 1 }) {
+  async getPackingSlipsReceivers({ fromDate, toDate, status, page = 0 }) {
     const res = await this.executeRequest('consultarRemitosReceptor', {
-      estadoRecepcion: statusType,
-      nroPagina: page,
-    }, 'consultarRemitos');
+      fechaDesde: fromDate,
+      fechaHasta: toDate,
+      estado: status,
+      // numeroPagina: page,
+    });
     return res
   }
 
   /**
-   * Get receivers category types from AFIP {@see WS
-   * Specification item 2.5.21}
-   *
-   * @return object {arrayCategoriasReceptor : array of code and description of receivers category
-   *  types, arrayErroresFormato: array of any format errors }
-   **/
-  async getReceiversCategoryTypes() {
-    return await this.executeRequest('consultarTiposCategoriaReceptor', null, 'consultarCategoriasReceptor');
-  }
-
-  /**
    * Send AFIP reception of packing slips {@see WS
-   * Specification item 2.5.7}
+   * Specification item 16.4}
    *
    * @param long number 		Slip Number to register reception
-   * @param string status 		One of ACE, ACP or NAC
-   * @param short category 		Receiver category type
+   * @param string status 		Reception approved or not. Possible values are "S" | "N"
    * @return object {codRemito : slip code to register, evento: system event, if exists,
    *  arrayObservaciones: array of observations, if exists, arrayErrores: array of errors }
    **/
-  async registerReception({ slipCode, status, category }) {
-    const res = await this.executeRequest('registrarRecepcion', {
-      codRemito: slipCode,
-      estado: status,
-      categoriaReceptor: category
+  async registerReception({ slipCode, status }) {
+    const res = await this.executeRequest('confirmarRecepcionMercaderia', {
+      codigoRemito: slipCode,
+      aceptaRecepcion: status
     });
     return res
   }
@@ -72,18 +65,6 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
    **/
   async getServerStatus() {
     return await this.executeRequest('FEDummy');
-  }
-
-  /**
-   * Change date from AFIP used format (yyyymmdd) to yyyy-mm-dd
-   *
-   * @param string|int date to format
-   *
-   * @return string date in format yyyy-mm-dd
-   **/
-  formatDate(date) {
-    return date.toString()
-      .replace(/(\d{4})(\d{2})(\d{2})/, (string, year, month, day) => `${year}-${month}-${day}`);
   }
 
   /**
@@ -118,7 +99,7 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
       return {};
     }
 
-    const { token, sign } = await this.afip.GetServiceTA('wsremcarne');
+    const { token, sign } = await this.afip.GetServiceTA('wsremazucar');
 
     return {
       'authRequest': {

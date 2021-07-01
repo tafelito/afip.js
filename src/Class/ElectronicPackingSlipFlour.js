@@ -1,17 +1,17 @@
 const AfipWebService = require('@afipsdk/afip.js/src/Class/AfipWebService');
 
 /**
- * SDK for AFIP Electronic Packing Slip (RemCarneService)
+ * SDK for AFIP Electronic Packing Slip (wsremhRemHarinaServicearina)
  *
- * @link https://www.afip.gob.ar/ws/remitoElecCarnico/Manual-Desarrollador-WSREMCARNE-v3-4.pdf
+ * @link http://www.afip.gob.ar/fe/documentos/manual_desarrollador_COMPG_v2_10.pdf WS Specification
  **/
-module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
+module.exports = class ElectronicPackingSlipFlour extends AfipWebService {
   constructor(afip) {
     const options = {
-      WSDL: 'wsremcarne-production.wsdl',
-      URL: 'https://serviciosjava.afip.gob.ar/wsremcarne/RemCarneService',
-      WSDL_TEST: 'wsremcarne.wsdl',
-      URL_TEST: 'https://fwshomo.afip.gov.ar/wsremcarne/RemCarneService',
+      WSDL: 'wsremharina-production.wsdl',
+      URL: 'https://serviciosjava.afip.gob.ar/wsremharina/RemHarinaService',
+      WSDL_TEST: 'wsremharina.wsdl',
+      URL_TEST: 'https://fwshomo.afip.gov.ar/wsremharina/RemHarinaService',
       afip
     }
 
@@ -75,18 +75,6 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
   }
 
   /**
-   * Change date from AFIP used format (yyyymmdd) to yyyy-mm-dd
-   *
-   * @param string|int date to format
-   *
-   * @return string date in format yyyy-mm-dd
-   **/
-  formatDate(date) {
-    return date.toString()
-      .replace(/(\d{4})(\d{2})(\d{2})/, (string, year, month, day) => `${year}-${month}-${day}`);
-  }
-
-  /**
    * Sends request to AFIP servers
    *
    * @param string 	operation 	SOAP operation to do
@@ -118,7 +106,7 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
       return {};
     }
 
-    const { token, sign } = await this.afip.GetServiceTA('wsremcarne');
+    const { token, sign } = await this.afip.GetServiceTA('wsremharina');
 
     return {
       'authRequest': {
