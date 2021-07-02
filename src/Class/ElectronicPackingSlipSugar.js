@@ -64,7 +64,12 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
    * server status}
    **/
   async getServerStatus() {
-    return await this.executeRequest('FEDummy');
+    const res = await this.executeRequest('dummy', undefined, {
+      postProcess: function (_xml) {
+        return _xml.replace('<dummyRequest></dummyRequest>', '');
+      }
+    });
+    return res
   }
 
   /**
@@ -76,11 +81,11 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
    *
    * @return mixed Operation results
    **/
-  async executeRequest(operation, params = {}, resultOperation = operation) {
+  async executeRequest(operation, params = {}, options, resultOperation = operation) {
     // Object.assign(params, await this.getWSInitialRequest(operation));
     const authParams = await this.getWSInitialRequest(operation);
 
-    const results = await super.executeRequest(operation, { ...authParams, ...params });
+    const results = await super.executeRequest(operation, { ...authParams, ...params }, options);
 
     await this._checkErrors(resultOperation, results);
 
@@ -95,7 +100,7 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
    * @return array Request parameters
    **/
   async getWSInitialRequest(operation) {
-    if (operation === 'FEDummy') {
+    if (operation === 'dummy') {
       return {};
     }
 

@@ -28,7 +28,7 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
     const res = await this.executeRequest('consultarRemitosReceptor', {
       estadoRecepcion: statusType,
       // nroPagina: page,
-    }, 'consultarRemitos');
+    }, undefined, 'consultarRemitos');
     return res
   }
 
@@ -64,14 +64,19 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
 
   /**
    * Asks to web service for servers status {@see WS
-   * Specification item 4.14}
+   * Specification item 2.5.25}
    *
    * @return object { AppServer : Web Service status,
    * DbServer : Database status, AuthServer : Autentication
    * server status}
    **/
   async getServerStatus() {
-    return await this.executeRequest('FEDummy');
+    const res = await this.executeRequest('dummy', undefined, {
+      postProcess: function (_xml) {
+        return _xml.replace('<dummyRequest></dummyRequest>', '');
+      }
+    });
+    return res
   }
 
   /**
@@ -95,11 +100,11 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
    *
    * @return mixed Operation results
    **/
-  async executeRequest(operation, params = {}, resultOperation = operation) {
+  async executeRequest(operation, params = {}, options, resultOperation = operation) {
     // Object.assign(params, await this.getWSInitialRequest(operation));
     const authParams = await this.getWSInitialRequest(operation);
 
-    const results = await super.executeRequest(operation, { ...authParams, ...params });
+    const results = await super.executeRequest(operation, { ...authParams, ...params }, options);
 
     await this._checkErrors(resultOperation, results);
 
@@ -114,7 +119,7 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
    * @return array Request parameters
    **/
   async getWSInitialRequest(operation) {
-    if (operation === 'FEDummy') {
+    if (operation === 'dummy') {
       return {};
     }
 

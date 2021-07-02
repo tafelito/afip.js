@@ -68,7 +68,7 @@ module.exports = class AfipWebService {
 	 * @param operation SOAP operation to execute 
 	 * @param params Parameters to send
 	 **/
-	async executeRequest(operation, params = {}) {
+	async executeRequest(operation, params = {}, options) {
 		// Create SOAP client
 		if (!this.soapClient) {
 			let soapClientOptions = { 
@@ -82,7 +82,7 @@ module.exports = class AfipWebService {
 		}
 
 		// Call to SOAP method
-		let [ result ] = await this.soapClient[operation+'Async'](params);
+		let [ result ] = await this.soapClient[operation+'Async'](params, options);
 		
 		//Return response parsed as JSON
 		return result;
