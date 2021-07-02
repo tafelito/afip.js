@@ -3,7 +3,7 @@ const AfipWebService = require('@afipsdk/afip.js/src/Class/AfipWebService');
 /**
  * SDK for AFIP Electronic Packing Slip (RemAzucarService)
  *
- * @link https://www.afip.gob.ar/ws/remitoElecAzucar/Manual-DesarrolladorWSREMAZUCAR-v2_0_8.pdf
+ * @link https://www.afip.gob.ar/ws/remitoElecAzucar/Manual-DesarrolladorWSREMAZUCAR-v2_0_8.pdf WS Specification
  **/
 module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
   constructor(afip) {

@@ -3,7 +3,7 @@ const AfipWebService = require('@afipsdk/afip.js/src/Class/AfipWebService');
 /**
  * SDK for AFIP Electronic Packing Slip (wsremhRemHarinaServicearina)
  *
- * @link http://www.afip.gob.ar/fe/documentos/manual_desarrollador_COMPG_v2_10.pdf WS Specification
+ * @link https://www.afip.gob.ar/ws/remitoHTSDMT/Manual_Desarrollador_WSREMHARINA_v2.4.pdf WS Specification
  **/
 module.exports = class ElectronicPackingSlipFlour extends AfipWebService {
   constructor(afip) {
@@ -27,20 +27,9 @@ module.exports = class ElectronicPackingSlipFlour extends AfipWebService {
   async getPackingSlipsReceivers({ statusType, page = 1 }) {
     const res = await this.executeRequest('consultarRemitosReceptor', {
       estadoRecepcion: statusType,
-      nroPagina: page,
+      // nroPagina: page,
     }, 'consultarRemitos');
     return res
-  }
-
-  /**
-   * Get receivers category types from AFIP {@see WS
-   * Specification item 2.5.21}
-   *
-   * @return object {arrayCategoriasReceptor : array of code and description of receivers category
-   *  types, arrayErroresFormato: array of any format errors }
-   **/
-  async getReceiversCategoryTypes() {
-    return await this.executeRequest('consultarTiposCategoriaReceptor', null, 'consultarCategoriasReceptor');
   }
 
   /**
@@ -49,15 +38,15 @@ module.exports = class ElectronicPackingSlipFlour extends AfipWebService {
    *
    * @param long number 		Slip Number to register reception
    * @param string status 		One of ACE, ACP or NAC
-   * @param short category 		Receiver category type
+   * @param date date 		Effective date of the reception
    * @return object {codRemito : slip code to register, evento: system event, if exists,
    *  arrayObservaciones: array of observations, if exists, arrayErrores: array of errors }
    **/
-  async registerReception({ slipCode, status, category }) {
+  async registerReception({ slipCode, status, date }) {
     const res = await this.executeRequest('registrarRecepcion', {
       codRemito: slipCode,
       estado: status,
-      categoriaReceptor: category
+      fecha: date
     });
     return res
   }
