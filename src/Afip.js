@@ -206,10 +206,8 @@ Afip.prototype.CreateServiceTA = async function(service) {
 	// // Wait for cert and key content
 	// const [cert, key] = await Promise.all([certPromise, keyPromise]);
 
-	const cert = process.env.AFIP_CERT
-	console.log("🚀 ~ cert", cert)
-	const key = process.env.AFIP_KEY
-	console.log("🚀 ~ key", key)
+	const cert = process.env.AFIP_CERT.replace(/\\n/g, '\n')
+	const key = process.env.AFIP_KEY.replace(/\\n/g, '\n')
 
 	// Sign Tokent request authorization XML
 	const p7 = forge.pkcs7.createSignedData();
