@@ -87,7 +87,7 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
 
     const results = await super.executeRequest(operation, { ...authParams, ...params }, options);
 
-    await this._checkErrors(resultOperation, results);
+    // await this._checkErrors(resultOperation, results);
 
     return results[resultOperation + 'Return'];
   }

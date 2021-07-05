@@ -83,7 +83,7 @@ module.exports = class ElectronicPackingSlipFlour extends AfipWebService {
 
     const results = await super.executeRequest(operation, { ...authParams, ...params }, options);
 
-    await this._checkErrors(resultOperation, results);
+    // await this._checkErrors(resultOperation, results);
 
     return results[resultOperation + 'Return'];
   }
@@ -134,7 +134,7 @@ module.exports = class ElectronicPackingSlipFlour extends AfipWebService {
     //   }
     // }
 
-    if (res.Errors) {
+    if (res?.Errors) {
       const err = Array.isArray(res.Errors.Err) ? res.Errors.Err[0] : res.Errors.Err;
       throw new Error(`(${err.Code}) ${err.Msg}`, err.Code);
     }
