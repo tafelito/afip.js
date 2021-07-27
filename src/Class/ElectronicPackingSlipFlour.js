@@ -28,7 +28,7 @@ module.exports = class ElectronicPackingSlipFlour extends AfipWebService {
     const res = await this.executeRequest('consultarRemitosReceptor', {
       estadoRecepcion: statusType,
       // nroPagina: page,
-    }, 'consultarRemitos');
+    }, undefined, 'consultarRemitos');
     return res
   }
 
