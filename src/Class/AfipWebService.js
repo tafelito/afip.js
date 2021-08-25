@@ -73,7 +73,24 @@ module.exports = class AfipWebService {
 		if (!this.soapClient) {
 			let soapClientOptions = { 
 				disableCache: true, 
-				forceSoap12Headers: this.soapv12
+				forceSoap12Headers: this.soapv12,
+				customDeserializer: {
+					// this function will be used to any date found in soap responses
+					date: function (text, context) {
+					  /* text is the value of the xml element.
+						context contains the name of the xml element and other infos :
+						  {
+							  name: 'lastUpdatedDate',
+							  object: {},
+							  schema: 'xsd:date',
+							  id: undefined,
+							  nil: false
+						  }
+		  
+					   */
+					  return text;
+					}
+				  }
 			};
 
 			this.soapClient = await soap.createClientAsync(this.WSDL, soapClientOptions);
