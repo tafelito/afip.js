@@ -31,8 +31,8 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
       rangoFechas: {
         fechaDesde: fromDate,
         fechaHasta: toDate
-      }
-      // nroPagina: page,
+      },
+      nroPagina: page,
     }, undefined, 'consultarRemitos');
     return res
   }
