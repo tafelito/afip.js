@@ -24,9 +24,14 @@ module.exports = class ElectronicPackingSlipMeat extends AfipWebService {
    *
    * @return array All packing slips
    **/
-  async getPackingSlipsReceivers({ statusType, page = 1 }) {
+  async getPackingSlipsReceivers({ statusType, cuit, fromDate, toDate, page = 1 }) {
     const res = await this.executeRequest('consultarRemitosReceptor', {
       estadoRecepcion: statusType,
+      cuitEmisor: cuit,
+      rangoFechas: {
+        fechaDesde: fromDate,
+        fechaHasta: toDate
+      }
       // nroPagina: page,
     }, undefined, 'consultarRemitos');
     return res
