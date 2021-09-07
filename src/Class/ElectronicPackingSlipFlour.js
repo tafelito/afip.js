@@ -47,7 +47,7 @@ module.exports = class ElectronicPackingSlipFlour extends AfipWebService {
       codRemito: slipCode,
       estado: status,
       fecha: date
-    });
+    }, undefined, 'operacion');
     return res
   }
 
