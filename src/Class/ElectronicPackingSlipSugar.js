@@ -19,6 +19,24 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
   }
 
   /**
+   * Asks to AFIP Servers for packing slip {@see WS
+   * Specification item 7}
+   *
+   * @return Detailed generated packing slip
+   **/
+   async getPackingSlip({ slipCode, idReq, type, loc, refNumber, cuit }) {
+    const res = await this.executeRequest('consultarRemito', {
+      ...(slipCode && { codRemito: slipCode }),
+      ...(idReq && { idReqCliente: idReq }),
+      ...(type && { tipoComprobante: type }),
+      ...(loc && { puntoEmision: loc }),
+      ...(refNumber && { nroComprobante: refNumber }),
+      ...(cuit && { cuitEmisor: cuit }),
+    }, undefined, 'consultarRemito');
+    return res
+  }
+
+  /**
    * Asks to AFIP Servers for receivers packing slips {@see WS
    * Specification item 19}
    *
@@ -44,13 +62,15 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
    *
    * @param long number 		Slip Number to register reception
    * @param string status 		Reception approved or not. Possible values are "S" | "N"
+   * @param array products 		List of products to regitser
    * @return object {codRemito : slip code to register, evento: system event, if exists,
    *  arrayObservaciones: array of observations, if exists, arrayErrores: array of errors }
    **/
-  async registerReception({ slipCode, status }) {
+   async registerReception({ slipCode, status, products }) {
     const res = await this.executeRequest('confirmarRecepcionMercaderia', {
       codigoRemito: slipCode,
-      aceptaRecepcion: status
+      arrayMercaderiaRecibida: products,
+      aceptaRecepcion: status,
     });
     return res
   }
