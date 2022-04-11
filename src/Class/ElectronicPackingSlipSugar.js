@@ -24,7 +24,7 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
    *
    * @return Detailed generated packing slip
    **/
-   async getPackingSlip({ slipCode, idReq, type, loc, refNumber, cuit }) {
+  async getPackingSlip({ slipCode, idReq, type, loc, refNumber, cuit }) {
     const res = await this.executeRequest('consultarRemito', {
       ...(slipCode && { codRemito: slipCode }),
       ...(idReq && { idReqCliente: idReq }),
@@ -46,12 +46,12 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
    * @param int page 			Number of page results
    * @return array All packing slips
    **/
-  async getPackingSlipsReceivers({ fromDate, toDate, status, page = 0 }) {
+  async getPackingSlipsReceivers({ fromDate, toDate, status, page = 1 }) {
     const res = await this.executeRequest('consultarRemitosReceptor', {
       fechaDesde: fromDate,
       fechaHasta: toDate,
       estado: status,
-      // numeroPagina: page,
+      numeroPagina: page,
     });
     return res
   }
@@ -66,7 +66,7 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
    * @return object {codRemito : slip code to register, evento: system event, if exists,
    *  arrayObservaciones: array of observations, if exists, arrayErrores: array of errors }
    **/
-   async registerReception({ slipCode, status, products }) {
+  async registerReception({ slipCode, status, products }) {
     const res = await this.executeRequest('confirmarRecepcionMercaderia', {
       codigoRemito: slipCode,
       arrayMercaderiaRecibida: products,
