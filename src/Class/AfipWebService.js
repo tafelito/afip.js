@@ -74,6 +74,7 @@ module.exports = class AfipWebService {
 			let soapClientOptions = { 
 				disableCache: true, 
 				forceSoap12Headers: this.soapv12,
+				namespaceArrayElements: false,
 				customDeserializer: {
 					// this function will be used to any date found in soap responses
 					date: function (text, context) {
