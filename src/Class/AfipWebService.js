@@ -18,6 +18,13 @@ module.exports = class AfipWebService {
 		this.soapv12 = webServiceOptions.soapV12 || false;
 
 		/**
+		 *  Support non-standard array semantics
+		 *
+		 * @var boolean
+		 **/
+		 this.nsArrayElems = webServiceOptions.nsArrayElems || true;
+
+		/**
 		 * File name for the Web Services Description Language
 		 *
 		 * @var string
@@ -74,7 +81,7 @@ module.exports = class AfipWebService {
 			let soapClientOptions = { 
 				disableCache: true, 
 				forceSoap12Headers: this.soapv12,
-				namespaceArrayElements: false,
+				namespaceArrayElements: this.nsArrayElems,
 				customDeserializer: {
 					// this function will be used to any date found in soap responses
 					date: function (text, context) {

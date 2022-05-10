@@ -12,7 +12,8 @@ module.exports = class ElectronicPackingSlipSugar extends AfipWebService {
       URL: 'https://serviciosjava.afip.gob.ar/wsremazucar/RemAzucarService',
       WSDL_TEST: 'wsremazucar.wsdl',
       URL_TEST: 'https://fwshomo.afip.gov.ar/wsremazucar/RemAzucarService',
-      afip
+      afip,
+      nsArrayElems: false
     }
 
     super(options);
